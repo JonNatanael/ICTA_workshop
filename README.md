@@ -7,22 +7,26 @@
 
 ### Programska oprema
 
-Za delo na oddaljenem računalniku bomo uporabili dva programa: prvi je x2go, ki nam bo omogočil dostop do ukazne vrstice na strežniku, še pomembneje pa, da bo omogočil vizualizacijo na lokalnem računalniku.
-Drugi program, WinSCP, bomo uporabili za prenos datotek z in na strežnik. Omogočil nam bo lokalno urejanje skript, ki jih bomo nato pognali v ukazni vrstici. Ker želimo narediti celo stvar precej bolj prenosljivo in enostavno, se kompleksnejših IDEjev ne bomo posluževali.
+Za delo na oddaljenem računalniku bomo uporabili dva programa: prvi je [x2go](https://wiki.x2go.org/doku.php/download:start), ki nam bo omogočil dostop do ukazne vrstice na strežniku, še pomembneje pa, da bo omogočil vizualizacijo na lokalnem računalniku.
+Drugi program, [WinSCP](https://winscp.net/eng/download.php), bomo uporabili za prenos datotek z in na strežnik. Omogočil nam bo lokalno urejanje skript, ki jih bomo nato pognali v ukazni vrstici. Ker želimo narediti celo stvar precej bolj prenosljivo in enostavno, kompleksnejših IDEjev ne bomo uporabljali.
 
 Večina višjenivojskega razvoja strojnega učenja se izvaja v programskem jeziku python. Python je zaradi fleksibilnosti primeren za hiter razvoj in testiranje idej, a je hkrati precej počasen. Veliko operacij in knjižnic za strojno učenje je zato napisanih v C/C++, njihove funkcije pa se nato kličejo preko pythona.
 
 ### CUDA
 
-CUDA (Compute Unified Device Architecture) je vmesnik (API), ki omogoča uporabo grafičnih procesnih enot (GPU) za pospeševanje računanja. Je skoraj nepogrešljiva za stronjo učenje, saj lahko proces pospeši za 5-10x.
+CUDA (Compute Unified Device Architecture) je vmesnik (API), ki omogoča uporabo grafičnih procesnih enot (GPU) za pospeševanje računanja. Je skoraj nepogrešljiva za stronjo učenje, saj lahko proces pospeši za 5-10x. Za nas bo pomembno predvsem to, kako nastaviti GPU, ki se bo uporabljal za inferenco modelov. To naredimo z izpostavitvijo spremenljivke `CUDA_VISIBLE_DEVICES=<GPU id>` preden poženemo program, npr. `CUDA_VISIBLE_DEVICES=2 python ultralytics_demos.py`.
 
 ### Conda
 
-Conda je package manager, ki ga uporabljamo za ločevanje okolij, v katerih izvajamo algoritme. Ker imajo različna ogrodja svoje zahteve za verzije knjižnic, lahko s condo ustvarjamo virtualna okolja, ki vsebujejo ustrezne verzije za posamezen projek.
+Conda je package manager, ki ga uporabljamo za ločevanje okolij, v katerih izvajamo algoritme. Ker imajo različna ogrodja svoje zahteve za verzije knjižnic, lahko s condo ustvarjamo virtualna okolja, ki vsebujejo ustrezne verzije za posamezen projekt. Tako dobimo ločena programska okolja za različne modele oz. ogrodja. Taka okolja s specifičnimi verzijami knjižnic lahko nato enostavno delimo preko `.yaml` datotek. Seznam conda okolij lahko dobimo z ukazom `conda info --envs`. Posamezno okolje lahko aktiviramo z ukazom `conda activate mlenv`, ki aktivira okolje `mlenv`, katerega bomo uporabljali za večji del delavnice.
 
 ### Strojna oprema
 
 Za to delavnico boste uporabili računalnik iz laboratorija LSI, imenovan Neumann. Ima 128 CPU jeder, 1 TB RAMa in 4 Nvidia A100 GPUje (vsak ima po 80GB VRAMa). Vaš začasen dostop bo preko uporabniškega imena `user<zaporedna številka>` in ustreznega gesla. Neumann je dostopen na IP naslovu `192.168.91.195` preko ssh protokola.
+
+### Podatki
+
+Za testiranje različnih modelov lahko uporabite prosto dostopne videe s platorme [pexels.com](pexels.com). Za poenostavitev procesa lahko uporabite skripto `pexels_download.py`. V skripti lahko določite ključne besede, ta pa nato prenese prvih 10 zadetkov. Videe pa seveda lahko prenesete tudi preko brskalnika, in jih prenesete na strežnik preko SFTP. Isto velja tudi za slike. Nekaj primerov slik in videov je že v direktorijih `/data/ICTA_workshop/pexels_videos` in `/data/ICTA_workshop/data`.
 
 ## Veliki jezikovni modeli (angl. Large Language Models - LLM)
 
@@ -80,7 +84,9 @@ Preizkusili bomo algoritem TrackerVit, ki je implementiran v knjižnici OpenCV. 
 
 ## SAM
 
-SAM (oz. SAM2) je temeljni model, ki so ga razvili pri FAIR (Facebook AI Research). Njegova kratica pomeni Segment Anything Model in temelji na segmentaciji preko ?pozivov? (angl. prompt). Model vhodno sliko najprej zakodira preko enkoderja, nato pa za predikcijo objektov na sliki uporabi uporabnikov poziv, ki je lahko v obliki bounding boxa, točke, ali teksta. Prompt nato omeji fokus modela in vrne rezultate. Model lahko deluje tudi brez promptov, v tem primeru vrne vse regije, ki bi lahko bile objekti.
+SAM (oz. SAM2) je temeljni model, ki so ga razvili pri FAIR (Facebook AI Research). Njegova kratica pomeni Segment Anything Model in temelji na segmentaciji preko pozivov (angl. prompt). Model vhodno sliko najprej zakodira preko enkoderja, nato pa za predikcijo objektov na sliki uporabi uporabnikov poziv, ki je lahko v obliki bounding boxa, točke, ali teksta. Prompt nato omeji fokus modela in vrne rezultate. Model lahko deluje tudi brez promptov, v tem primeru vrne vse regije, ki bi lahko bile objekti.
+
+Demonstracijo delovanja modela SAM tako za segmentacijo slik kot tudi videov lahko poženemo z ukazoma `image_demo.py` in `video_demo.py` v direktoriju `/data/ICTA_workshop/sam2`.
 
 ## CLIP/BLIP
 
