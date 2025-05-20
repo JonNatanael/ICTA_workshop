@@ -1,4 +1,5 @@
 
+  
 
 # ICTA: Hitri začetki z umetno inteligenco - praktični del
 
@@ -22,10 +23,6 @@ Conda je package manager, ki ga uporabljamo za ločevanje okolij, v katerih izva
 ### Strojna oprema
 
 Za to delavnico boste uporabili računalnik iz laboratorija LSI, imenovan Neumann. Ima 128 CPU jeder, 1 TB RAMa in 4 Nvidia A100 GPUje (vsak ima po 80GB VRAMa). Vaš začasen dostop bo preko uporabniškega imena `user<zaporedna številka>` in ustreznega gesla. Neumann je dostopen na IP naslovu `192.168.91.195` preko ssh protokola.
-
-## Temeljni modeli (angl. foundation models)
-
-
 
 ## Veliki jezikovni modeli (angl. Large Language Models - LLM)
 
@@ -89,6 +86,14 @@ SAM (oz. SAM2) je temeljni model, ki so ga razvili pri FAIR (Facebook AI Researc
 
 Modela CLIP (Contrastive Language–Image Pre-training) in BLIP (Bootstrapping Language-Image Pre-training) sta predstavnik a modelov, ki povezujejo jezikovne pristope s slikovnimi modeli. Naučena sta bila na parih slika+opis, njun cilj pa je bil proizvesti značilke, ki so si v latentnem prostoru podobne, ne glede na modaliteto. V osnovni obliki lahko take modele uporabljamo za klasifikacijo slik, pogosto pa se uporabljajo tudi v povezavi z drugimi modeli računalniškega vida. Odvisno od smeri se naloga imenuje *captioning* (predikcija opisa iz slike) oz. *grounding* (lokalizacija želenega objekta na podlagi slike). V uporabi skupaj z generativnimi modeli pa lahko CLIP/BLIP uporabimo tudi za generiranje slik z zeljeno vsebino.
 
+## Temeljni modeli (angl. foundation models)
+
+Ideja temeljnih modelov je, da postanejo z dovoljšnjo količino podatkov dovolj splošni, da lahko proizvedejo dobre rezultate tudi na domenah in v situacijah, ki jih med učnim procesom niso obravnavali. Temu procesu rečemo *zero-shot performance.* Primeri takih modelov so npr. SAM, GPT, CLIP in DINO.
+
+Implementacija temeljnih modelov, ki jih bomo uporabili se nahaja v direktoriju `zap-it`. To ogrodje je strukturirano za avtomatsko segmentacijo poljubnih objektov. Za enkodiranje slik se uporabi model SAM, ki vrne segmentacijske maske za vse regije, ki jih model prepozna kot potencialne objekte. Nato se izračunajo značilke posamezne maske z vizualno-jezikovnim modelom CLIP, hkrati pa se podobne značilke izračunajo tudi iz tekstovnega opisa objektov. Za posamezno regijo se nato vektor značilk primerja z vektorjem opisa. Če je kosinusna razdalja med vektorjema dovolj majhna, lahko posamezno regijo z veliko verjetnostjo klasificiramo kot željeni objekt.
+
+Za uporabo orodja moramo najprej aktivirati conda okolje z ukazom `conda activate zap-it`, nato pa metodo poženemo z ukazom `python zap-it-batch.py --config configs/example.yaml --dir path/to/images --verbose full` .
+
 ## HPC
 
 ### Ukazi
@@ -98,4 +103,3 @@ Modela CLIP (Contrastive Language–Image Pre-training) in BLIP (Bootstrapping L
 	- požene program na zahtevanem vozlišču
 - scancel
 	- prekliče alokacijo virov
-
